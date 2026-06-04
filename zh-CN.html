@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ghcask</title>
+    <meta
+      name="description"
+      content="把 GitHub Release 和直接下载地址转换成本地 Homebrew cask，用 Homebrew 安装 macOS 应用。"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-lang="zh-CN">
+    <header class="topbar">
+      <a class="brand" href="zh-CN.html" aria-label="ghcask 首页">
+        <span class="brand-mark" aria-hidden="true">g</span>
+        <span>ghcask</span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="#commands">命令</a>
+        <a href="#capabilities">能力</a>
+        <a href="#operations">运维</a>
+        <a href="https://github.com/oxsean/homebrew-ghcask" target="_blank" rel="noreferrer">GitHub</a>
+      </nav>
+      <div class="top-actions">
+        <a class="language-link" href="index.html" data-lang-link="en">英文</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>自动</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">面向本地 cask 的 Homebrew 命令</p>
+          <h1>从任意发布包安装 Mac 应用。</h1>
+          <p class="lede">
+            ghcask 会把 GitHub Release 或直接 package URL 转换成本地 Homebrew cask，让公开 Cask
+            索引之外的应用也能使用同一套安装、更新、重新安装、查看和清理流程。
+          </p>
+          <div class="command-stack" id="commands">
+            <button class="command-line command-line--primary" type="button" data-copy="brew tap oxsean/ghcask">
+              <code>brew tap oxsean/ghcask</code>
+              <span>复制</span>
+            </button>
+            <button class="command-line" type="button" data-copy="brew ghcask install owner/repo">
+              <code>brew ghcask install owner/repo</code>
+              <span>复制</span>
+            </button>
+            <button
+              class="command-line"
+              type="button"
+              data-copy="brew ghcask install cask-name --url https://example.com/download/Example-1.2.3.dmg"
+            >
+              <code>brew ghcask install cask-name --url https://example.com/download/Example-1.2.3.dmg</code>
+              <span>复制</span>
+            </button>
+          </div>
+        </div>
+
+        <aside class="terminal-panel" aria-label="本地生成结果预览">
+          <div class="terminal-header">
+            <span></span><span></span><span></span>
+            <strong>本地生成</strong>
+          </div>
+          <pre><code>$ brew ghcask install owner/repo
+==> Downloading https://github.com/...
+版本: v1.8.0
+资源: Example-1.8.0-arm64.dmg
+sha256: 8d7f...
+cask: ghcask/local/example
+
+$ brew ghcask update
+example: already current</code></pre>
+        </aside>
+      </section>
+
+
+      <section class="section" id="capabilities">
+        <div class="section-heading">
+          <p class="eyebrow">为什么需要 ghcask？</p>
+          <h2>更多应用，一个 Homebrew 工作流</h2>
+        </div>
+        <div class="cards cards--three">
+          <article class="card">
+            <h3>不用等索引</h3>
+            <p>
+              即使应用还没有进入公开 Homebrew Cask 索引，或者下载地址不在 GitHub 上，也能进入 Homebrew 工作流。
+            </p>
+          </article>
+          <article class="card">
+            <h3>减少手动安装</h3>
+            <p>
+              不再反复打开 release 页面、手动下载 package、拖拽安装，用一个熟悉的命令完成。
+            </p>
+          </article>
+          <article class="card">
+            <h3>统一日常管理</h3>
+            <p>
+              安装、更新、重新安装、查看信息、卸载和清理，都留在同一个终端工作流里。
+            </p>
+          </article>
+          <article class="card">
+            <h3>控制 release 轨道</h3>
+            <p>
+              需要尝鲜时用 prerelease，追求稳定时固定版本，准备好后再回到保存的 release 轨道。
+            </p>
+          </article>
+          <article class="card">
+            <h3>迁移到新 Mac</h3>
+            <p>
+              用 <code>Brewghcask.json</code> 把生成的 cask 带到另一台 Mac，让 Brewfile 恢复更稳定。
+            </p>
+          </article>
+          <article class="card">
+            <h3>自己掌控</h3>
+            <p>
+              使用本地 generated cask，不必等待公开 cask 审核，也不必发布个人 cask 定义。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <p class="eyebrow">安装与更新</p>
+          <h2>可直接执行的 release-aware 命令</h2>
+        </div>
+        <div class="snippet-grid">
+          <article class="snippet">
+            <h3>安装发布包应用</h3>
+            <pre><code>brew tap oxsean/ghcask
+brew ghcask install owner/repo</code></pre>
+          </article>
+          <article class="snippet">
+            <h3>从地址安装</h3>
+            <pre><code>brew ghcask install cask-name \
+  --url https://example.com/download/Example-1.2.3.dmg</code></pre>
+          </article>
+          <article class="snippet">
+            <h3>固定版本或切换轨道</h3>
+            <pre><code>brew ghcask install owner/repo --version v1.2.3
+brew ghcask unpin cask-name
+brew ghcask reinstall cask-name --prerelease</code></pre>
+          </article>
+          <article class="snippet">
+            <h3>更新受管 cask</h3>
+            <pre><code>brew ghcask update
+brew ghcask outdated --all
+brew ghcask upgrade</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="operations">
+        <div class="section-heading">
+          <p class="eyebrow">本地状态</p>
+          <h2>本地生成，由 Homebrew 管理</h2>
+        </div>
+        <div class="cards cards--four">
+          <article class="card">
+            <h3>本地 tap</h3>
+            <p>
+              生成的 cask 保存在本地 tap 中，distribution tap 保持干净。
+            </p>
+          </article>
+          <article class="card">
+            <h3>Homebrew cache</h3>
+            <p>
+              下载好的 package 会移动到 Homebrew 期望的 cask cache，再安装或重新安装。
+            </p>
+          </article>
+          <article class="card">
+            <h3>备份</h3>
+            <p>
+              <code>brew ghcask dump</code> 会把生成的 cask 和 registry 数据导出到 <code>Brewghcask.json</code>。
+            </p>
+          </article>
+          <article class="card">
+            <h3>恢复</h3>
+            <p>
+              恢复本地 generated 状态，信任 tap，再让 Brewfile 安装这些 cask。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section auth-section">
+        <div class="section-heading">
+          <p class="eyebrow">鉴权</p>
+          <h2>优先使用 gh，再逐级回退</h2>
+        </div>
+        <div class="auth-grid">
+          <div class="auth-step">
+            <span>1</span>
+            <p>优先使用已认证的 <code>gh</code>。</p>
+          </div>
+          <div class="auth-step">
+            <span>2</span>
+            <p>然后使用带有 <code>GH_TOKEN</code> 或 <code>GITHUB_TOKEN</code> 的 <code>curl</code>。</p>
+          </div>
+          <div class="auth-step">
+            <span>3</span>
+            <p>公开仓库可在条件允许时使用匿名 <code>curl</code>。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>ghcask</span>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ghcask</title>
+    <meta
+      name="description"
+      content="Install GitHub Release and direct URL macOS apps through Homebrew with local generated casks."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page-lang="en">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="ghcask home">
+        <span class="brand-mark" aria-hidden="true">g</span>
+        <span>ghcask</span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="#commands">Commands</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#operations">Operations</a>
+        <a href="https://github.com/oxsean/homebrew-ghcask" target="_blank" rel="noreferrer">GitHub</a>
+      </nav>
+      <div class="top-actions">
+        <a class="language-link" href="zh-CN.html" data-lang-link="zh-CN">Chinese</a>
+        <button class="theme-toggle" type="button" data-theme-toggle>Auto</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Homebrew command for local casks</p>
+          <h1><span>Install Mac apps</span> <span>from any release.</span></h1>
+          <p class="lede">
+            ghcask turns GitHub Releases and direct package URLs into local Homebrew casks, so apps
+            from outside the public Cask index can still use the same install, update, reinstall,
+            inspect, and cleanup workflow.
+          </p>
+          <div class="command-stack" id="commands">
+            <button class="command-line command-line--primary" type="button" data-copy="brew tap oxsean/ghcask">
+              <code>brew tap oxsean/ghcask</code>
+              <span>Copy</span>
+            </button>
+            <button class="command-line" type="button" data-copy="brew ghcask install owner/repo">
+              <code>brew ghcask install owner/repo</code>
+              <span>Copy</span>
+            </button>
+            <button
+              class="command-line"
+              type="button"
+              data-copy="brew ghcask install cask-name --url https://example.com/download/Example-1.2.3.dmg"
+            >
+              <code>brew ghcask install cask-name --url https://example.com/download/Example-1.2.3.dmg</code>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <aside class="terminal-panel" aria-label="Generated cask preview">
+          <div class="terminal-header">
+            <span></span><span></span><span></span>
+            <strong>generated locally</strong>
+          </div>
+          <pre><code>$ brew ghcask install owner/repo
+==> Downloading https://github.com/...
+release: v1.8.0
+asset: Example-1.8.0-arm64.dmg
+sha256: 8d7f...
+cask: ghcask/local/example
+
+$ brew ghcask update
+example: already current</code></pre>
+        </aside>
+      </section>
+
+
+      <section class="section" id="capabilities">
+        <div class="section-heading">
+          <p class="eyebrow">Why ghcask?</p>
+          <h2>More apps, one Homebrew workflow</h2>
+        </div>
+        <div class="cards cards--three">
+          <article class="card">
+            <h3>Skip the index wait</h3>
+            <p>
+              Install apps through Homebrew even when they are not listed in the public Cask index
+              or GitHub is not their download home.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Replace manual installs</h3>
+            <p>
+              Stop hunting release pages, downloading packages by hand, and dragging apps into place.
+              Use one command instead.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Manage the full lifecycle</h3>
+            <p>
+              Keep install, update, reinstall, inspect, uninstall, and cleanup in one terminal
+              workflow.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Control release tracks</h3>
+            <p>
+              Try prereleases, pin known-good versions, and return to the saved release track when
+              you are ready.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Move to a new Mac</h3>
+            <p>
+              Carry generated casks to another Mac with <code>Brewghcask.json</code> and keep Brewfile
+              restores predictable.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Stay in control</h3>
+            <p>
+              Use generated local casks without waiting for public cask review or publishing personal
+              definitions.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Install and update</p>
+          <h2>Release-aware commands you can actually run</h2>
+        </div>
+        <div class="snippet-grid">
+          <article class="snippet">
+            <h3>Install a release app</h3>
+            <pre><code>brew tap oxsean/ghcask
+brew ghcask install owner/repo</code></pre>
+          </article>
+          <article class="snippet">
+            <h3>Install from a URL</h3>
+            <pre><code>brew ghcask install cask-name \
+  --url https://example.com/download/Example-1.2.3.dmg</code></pre>
+          </article>
+          <article class="snippet">
+            <h3>Pin or switch tracks</h3>
+            <pre><code>brew ghcask install owner/repo --version v1.2.3
+brew ghcask unpin cask-name
+brew ghcask reinstall cask-name --prerelease</code></pre>
+          </article>
+          <article class="snippet">
+            <h3>Update managed casks</h3>
+            <pre><code>brew ghcask update
+brew ghcask outdated --all
+brew ghcask upgrade</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="operations">
+        <div class="section-heading">
+          <p class="eyebrow">Local state</p>
+          <h2>Generated locally, managed by Homebrew</h2>
+        </div>
+        <div class="cards cards--four">
+          <article class="card">
+            <h3>Local tap</h3>
+            <p>
+              Generated casks live in a local tap, while the distribution tap stays clean.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Homebrew cache</h3>
+            <p>
+              Downloads are moved into Homebrew's expected cask cache before install or reinstall.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Backup</h3>
+            <p>
+              <code>brew ghcask dump</code> exports generated casks and registry data to
+              <code>Brewghcask.json</code>.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Restore</h3>
+            <p>
+              Restore local generated state, trust the tap, and let Brewfile install the casks.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section auth-section">
+        <div class="section-heading">
+          <p class="eyebrow">Authentication</p>
+          <h2>Prefer gh, fall back cleanly</h2>
+        </div>
+        <div class="auth-grid">
+          <div class="auth-step">
+            <span>1</span>
+            <p>Use authenticated <code>gh</code> when available.</p>
+          </div>
+          <div class="auth-step">
+            <span>2</span>
+            <p>Use <code>curl</code> with <code>GH_TOKEN</code> or <code>GITHUB_TOKEN</code>.</p>
+          </div>
+          <div class="auth-step">
+            <span>3</span>
+            <p>Use anonymous <code>curl</code> for public repositories when possible.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>ghcask</span>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "net/http"
+require "open3"
+require "socket"
+
+ROOT = File.expand_path("..", __dir__)
+
+def check(condition, message)
+  abort(message) unless condition
+end
+
+Dir.chdir(ROOT) do
+  _stdout, stderr, status = Open3.capture3("node", "--check", "app.js")
+  abort(stderr.empty? ? "node --check app.js failed" : stderr) unless status.success?
+
+  english = File.read("index.html")
+  chinese = File.read("zh-CN.html")
+  css = File.read("styles.css")
+  js = File.read("app.js")
+
+  check(english.include?('lang="en"'), "English page lang is missing")
+  check(chinese.include?('lang="zh-CN"'), "Chinese page lang is missing")
+  check(english.include?("Why ghcask?"), "English Why ghcask section is missing")
+  check(chinese.include?("为什么需要 ghcask？"), "Chinese Why ghcask section is missing")
+  check(english.include?("Skip the index wait"), "English benefit content is missing")
+  check(chinese.include?("不用等索引"), "Chinese benefit content is missing")
+  check(english.include?("brew ghcask install cask-name --url"), "English direct URL command is missing")
+  check(chinese.include?("brew ghcask install cask-name --url"), "Chinese direct URL command is missing")
+  check(!english.include?("Automatic dark mode"), "English page still contains automatic dark mode content")
+  check(!chinese.include?("自动深色模式"), "Chinese page still contains automatic dark mode content")
+  check(!css.include?("status-strip"), "Removed status strip CSS is still present")
+  check(!english.include?("复制"), "English page contains Chinese copy text")
+  check(!chinese.include?("Copied to clipboard"), "Chinese page contains English toast copy")
+  check(css.include?("prefers-color-scheme: dark"), "Auto dark mode CSS is missing")
+  check(css.include?('html[data-theme="light"]'), "Manual light theme CSS is missing")
+  check(css.include?('html[data-theme="dark"]'), "Manual dark theme CSS is missing")
+  check(js.include?("navigator.clipboard.writeText"), "Copy behavior is missing")
+  check(js.include?("ghcask-theme"), "Theme storage key is missing")
+
+  server = TCPServer.new("127.0.0.1", 0)
+  port = server.addr[1]
+  server.close
+  pid = spawn("python3", "-m", "http.server", port.to_s, "--bind", "127.0.0.1", out: File::NULL, err: File::NULL)
+  sleep 0.8
+
+  ["index.html", "zh-CN.html", "styles.css", "app.js"].each do |path|
+    response = Net::HTTP.get_response(URI("http://127.0.0.1:#{port}/#{path}"))
+    check(response.is_a?(Net::HTTPSuccess), "#{path} did not return HTTP 200")
+  end
+ensure
+  if pid
+    Process.kill("TERM", pid)
+    Process.wait(pid)
+  end
+end
+
+puts "site validation ok"
